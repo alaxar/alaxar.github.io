@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Low Level Mind</title>
-    <link>http://localhost:1313/</link>
+    <link>http://alazar.github.io/</link>
     <description>Recent content on Low Level Mind</description>
     <generator>Hugo -- 0.155.3</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 15 Feb 2026 23:34:40 +0300</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://alazar.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Building a Ray Tracer from Scratch in C&#43;&#43; Part 1: Mathematical Foundations</title>
-      <link>http://localhost:1313/posts/01/ray_tracing_from_scratch_in_cpp/</link>
+      <link>http://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/</link>
       <pubDate>Sun, 15 Feb 2026 23:34:40 +0300</pubDate>
-      <guid>http://localhost:1313/posts/01/ray_tracing_from_scratch_in_cpp/</guid>
+      <guid>http://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/</guid>
       <description>ray tracer</description>
     </item>
     <item>
       <title>Tags</title>
-      <link>http://localhost:1313/tags/</link>
+      <link>http://alazar.github.io/tags/</link>
       <pubDate>Sun, 15 Feb 2026 22:00:26 +0300</pubDate>
-      <guid>http://localhost:1313/tags/</guid>
+      <guid>http://alazar.github.io/tags/</guid>
       <description></description>
     </item>
     <item>
       <title>Projects</title>
-      <link>http://localhost:1313/projects/</link>
+      <link>http://alazar.github.io/projects/</link>
       <pubDate>Sun, 15 Feb 2026 20:54:54 +0300</pubDate>
-      <guid>http://localhost:1313/projects/</guid>
+      <guid>http://alazar.github.io/projects/</guid>
       <description>&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;lksdjflkdf&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     <item>
       <title>Contact Me</title>
-      <link>http://localhost:1313/contact/</link>
+      <link>http://alazar.github.io/contact/</link>
       <pubDate>Sun, 15 Feb 2026 20:47:39 +0300</pubDate>
-      <guid>http://localhost:1313/contact/</guid>
+      <guid>http://alazar.github.io/contact/</guid>
       <description></description>
     </item>
   </channel>

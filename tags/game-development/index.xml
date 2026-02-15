@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Game Development on Low Level Mind</title>
-    <link>http://localhost:1313/tags/game-development/</link>
+    <link>http://alazar.github.io/tags/game-development/</link>
     <description>Recent content in Game Development on Low Level Mind</description>
     <generator>Hugo -- 0.155.3</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 15 Feb 2026 23:34:40 +0300</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/game-development/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://alazar.github.io/tags/game-development/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Building a Ray Tracer from Scratch in C&#43;&#43; Part 1: Mathematical Foundations</title>
-      <link>http://localhost:1313/posts/01/ray_tracing_from_scratch_in_cpp/</link>
+      <link>http://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/</link>
       <pubDate>Sun, 15 Feb 2026 23:34:40 +0300</pubDate>
-      <guid>http://localhost:1313/posts/01/ray_tracing_from_scratch_in_cpp/</guid>
+      <guid>http://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/</guid>
       <description>ray tracer</description>
     </item>
   </channel>
