@@ -9,16 +9,16 @@
 <meta name="keywords" content="Computer Graphics, Game Development">
 <meta name="description" content="ray tracer">
 <meta name="author" content="">
-<link rel="canonical" href="http://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.3fe0c8bae71f557cc4ff14b78b944df5c07a15ef5ae0eef4b37c362cc70f9ffe.css" integrity="sha256-P&#43;DIuucfVXzE/xS3i5RN9cB6Fe9a4O70s3w2LMcPn/4=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://alazar.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://alazar.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://alazar.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://alazar.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="http://alazar.github.io/safari-pinned-tab.svg">
+<link rel="canonical" href="https://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://alazar.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://alazar.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://alazar.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://alazar.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://alazar.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/">
+<link rel="alternate" hreflang="en" href="https://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/">
 <noscript>
     <style>
         #theme-toggle,
@@ -70,7 +70,7 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script><meta property="og:url" content="http://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/">
+</script><meta property="og:url" content="https://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/">
   <meta property="og:site_name" content="Low Level Mind">
   <meta property="og:title" content="Building a Ray Tracer from Scratch in C&#43;&#43; Part 1: Mathematical Foundations">
   <meta property="og:description" content="ray tracer">
@@ -81,9 +81,9 @@
     <meta property="article:modified_time" content="2026-02-15T23:34:40+03:00">
     <meta property="article:tag" content="Computer Graphics">
     <meta property="article:tag" content="Game Development">
-    <meta property="og:image" content="http://alazar.github.io/image.webp">
+    <meta property="og:image" content="https://alazar.github.io/image.webp">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://alazar.github.io/image.webp">
+<meta name="twitter:image" content="https://alazar.github.io/image.webp">
 <meta name="twitter:title" content="Building a Ray Tracer from Scratch in C&#43;&#43; Part 1: Mathematical Foundations">
 <meta name="twitter:description" content="ray tracer">
 
@@ -97,13 +97,13 @@
       "@type": "ListItem",
       "position":  1 ,
       "name": "Posts",
-      "item": "http://alazar.github.io/posts/"
+      "item": "https://alazar.github.io/posts/"
     }, 
     {
       "@type": "ListItem",
       "position":  2 ,
       "name": "Building a Ray Tracer from Scratch in C++ Part 1: Mathematical Foundations",
-      "item": "http://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/"
+      "item": "https://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/"
     }
   ]
 }
@@ -121,18 +121,18 @@
   "articleBody": "Graphics APIs and game engines make rendering look easy, but they hide most of the interesting details. I wanted to understand what actually happens under the hood, so I decided to build a small 3D renderer from scratch using C++. By the end of this article, you’ll understand the core ideas behind ray tracing and be able to build a simple renderer yourself. We’ll finish by rendering the image shown below, without using any graphics libraries or engines but with C++ and Maths.\nWhy RayTracing In computer graphics, there are two main rendering techniques: rasterization and ray tracing.\nYou might ask, what exactly is rendering? In simple terms, rendering is the process of generating a 2D image or video from a 3D model or scene. It’s considered the final stage of a 3D engine.\nWhile rasterization is fast and used in real-time applications like games, ray tracing simulates how light behaves in the real world to produce highly realistic images, shadows, and reflections. It traces the path of light rays as they interact with objects in a 3D scene, calculating reflections, refractions, and accurate lighting effects.\nRay tracing involves some basic mathematics. Oops, I just mentioned our worst nightmare 😟 Don’t worry though, it’s not as scary as it sounds. I’ve got you. So without any further ado, let’s get started.\nOne drawback of ray tracing is performance. However, there are optimization techniques we can use to improve speed, which we’ll touch on other part.\nThe below image is generated using ray tracing algorithm\nHow Ray Tracing Works Ray tracing simulates how light travels. Rays are cast from a single point in 3D space which is the camera into the scene through an imaginary viewport. Each ray corresponds to a pixel on the screen. When a ray intersects an object (like a sphere or triangle), we compute the closest intersection point to determine the final color of that pixel.\nThis process is repeated for every pixel, creating a complete, realistic image.\nwe have prepared a pipeline to render a simple shape, we will improve it as we go deeper in the subject.\nCamera → rays Ray → Object intersection Drawing a pixel on the screen Let’s shoot some rays from the camera A ray is similar to a line but with an important difference a line extends infinitely in both directions, while a ray starts at a specific point and extends infinitely in one direction.\nMathematically, a ray can be represented using a parametric equation\nWhere:\nP is any point along the ray O is the ray’s origin (starting point) d is the direction vector t is a scalar parameter If t = 0, then P = O.\nIf t = 1, then P = O + d.\nIncreasing t moves the point along the ray indefinitely.\nlet’s say we have two points in a space “point A” and “point B”, let’s use 2D for now to better understand the above formula.\nA = (0, 0) and B = (4, 4)\nI will use a platform called desmos for plotting points, you can search it online\nAs we can see in the graph, we have two points, and we want to draw a line segment or a ray between them. A line is defined as an infinite set of points, so how can we represent the line that goes through points A and B? We use the parametric equation of a line. Before writing that equation, however, we need to determine the direction in which the line or ray is pointing. We can find this direction by subtracting point A from point B. The result is a vector, and this vector becomes the direction vector d in the parametric equation\nExample:\nnow we have the direction, if you look closely the vector d is the same as the point B, this is when the origin starts from 0, but if it was another point in the space it would be different.\nlet’s plug the direction in the equation and draw our line, but there is one missing piece, the “t” right? don’t worry we don’t have to do anything for ’t’ it has to start from 0.0 and increase it infinitly\n",
   "wordCount" : "701",
   "inLanguage": "en",
-  "image":"http://alazar.github.io/image.webp","datePublished": "2026-02-15T23:34:40+03:00",
+  "image":"https://alazar.github.io/image.webp","datePublished": "2026-02-15T23:34:40+03:00",
   "dateModified": "2026-02-15T23:34:40+03:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "http://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/"
+    "@id": "https://alazar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Low Level Mind",
     "logo": {
       "@type": "ImageObject",
-      "url": "http://alazar.github.io/favicon.ico"
+      "url": "https://alazar.github.io/favicon.ico"
     }
   }
 }
@@ -142,7 +142,7 @@
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://alazar.github.io/" accesskey="h" title="Low Level Mind (Alt + H)">Low Level Mind</a>
+            <a href="https://alazar.github.io/" accesskey="h" title="Low Level Mind (Alt + H)">Low Level Mind</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -168,27 +168,27 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="http://alazar.github.io/" title="Home">
+                <a href="https://alazar.github.io/" title="Home">
                     <span>Home</span>
                 </a>
             </li>
             <li>
-                <a href="http://alazar.github.io/posts" title="Blog">
+                <a href="https://alazar.github.io/posts" title="Blog">
                     <span>Blog</span>
                 </a>
             </li>
             <li>
-                <a href="http://alazar.github.io/projects" title="Projects">
+                <a href="https://alazar.github.io/projects" title="Projects">
                     <span>Projects</span>
                 </a>
             </li>
             <li>
-                <a href="http://alazar.github.io/archives" title="Archives">
+                <a href="https://alazar.github.io/archives" title="Archives">
                     <span>Archives</span>
                 </a>
             </li>
             <li>
-                <a href="http://alazar.github.io/search" title="Search (Alt &#43; /)" accesskey=/>
+                <a href="https://alazar.github.io/search" title="Search (Alt &#43; /)" accesskey=/>
                     <span>Search</span>
                 </a>
             </li>
@@ -208,7 +208,7 @@
 </div>
   </header> 
 <figure class="entry-cover">
-        <img loading="eager" src="http://alazar.github.io/image.webp" alt="">
+        <img loading="eager" src="https://alazar.github.io/image.webp" alt="">
         
 </figure>
   <div class="post-content"><p>Graphics APIs and game engines make rendering look easy, but they hide most of the interesting details. I wanted to understand what actually happens under the hood, so I decided to build a small 3D renderer from scratch using C++.
@@ -267,15 +267,15 @@ We&rsquo;ll finish by rendering the image shown below, without using any graphic
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="http://alazar.github.io/tags/computer-graphics/">Computer Graphics</a></li>
-      <li><a href="http://alazar.github.io/tags/game-development/">Game Development</a></li>
+      <li><a href="https://alazar.github.io/tags/computer-graphics/">Computer Graphics</a></li>
+      <li><a href="https://alazar.github.io/tags/game-development/">Game Development</a></li>
     </ul>
   </footer>
 </article>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="http://alazar.github.io/">Low Level Mind</a></span>
+        <span>&copy; 2026 <a href="https://alazar.github.io/">Low Level Mind</a></span>
         
 
     

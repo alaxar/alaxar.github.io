@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Categories on Low Level Mind</title>
-    <link>http://alazar.github.io/categories/</link>
+    <link>https://alazar.github.io/categories/</link>
     <description>Recent content in Categories on Low Level Mind</description>
     <generator>Hugo -- 0.155.3</generator>
     <language>en-us</language>
-    <atom:link href="http://alazar.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://alazar.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
