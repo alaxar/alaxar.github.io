@@ -2,18 +2,75 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Game Development on Low Level Mind</title>
-    <link>https://alaxar.github.io/tags/game-development/</link>
+    <link>https://lowlevelmind.com/tags/game-development/</link>
     <description>Recent content in Game Development on Low Level Mind</description>
     <generator>Hugo -- 0.155.3</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 15 Feb 2026 23:34:40 +0300</lastBuildDate>
-    <atom:link href="https://alaxar.github.io/tags/game-development/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://lowlevelmind.com/tags/game-development/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Building a Ray Tracer from Scratch in C&#43;&#43; Part 1: Mathematical Foundations</title>
-      <link>https://alaxar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/</link>
+      <link>https://lowlevelmind.com/posts/01/ray_tracing_from_scratch_in_cpp/</link>
       <pubDate>Sun, 15 Feb 2026 23:34:40 +0300</pubDate>
-      <guid>https://alaxar.github.io/posts/01/ray_tracing_from_scratch_in_cpp/</guid>
-      <description>ray tracer</description>
+      <guid>https://lowlevelmind.com/posts/01/ray_tracing_from_scratch_in_cpp/</guid>
+      <description>Graphics APIs and game engines make rendering look easy, but they hide most of the interesting details. I wanted to understand what actually happens under the hood, so I decided to build a small 3D renderer from scratch using C++</description>
+      <content:encoded><![CDATA[<p>Graphics APIs and game engines make rendering look easy, but they hide most of the interesting details. I wanted to understand what actually happens under the hood, so I decided to build a small 3D renderer from scratch using C++.
+By the end of this article, you&rsquo;ll understand the core ideas behind ray tracing and be able to build a simple renderer yourself.
+We&rsquo;ll finish by rendering the image shown below, without using any graphics libraries or engines but with C++ and Maths.</p>
+<p><img alt="Ray Traced Image" loading="lazy" src="/images/image.webp"></p>
+<h3 id="why-raytracing">Why RayTracing</h3>
+<p>In computer graphics, there are two main rendering techniques: <strong>rasterization</strong> and <strong>ray tracing</strong>.</p>
+<p>You might ask, what exactly is rendering? In simple terms, rendering is the process of generating a 2D image or video from a 3D model or scene. It&rsquo;s considered the final stage of a 3D engine.</p>
+<p>While rasterization is fast and used in real-time applications like games, ray tracing simulates how light behaves in the real world to produce highly realistic images, shadows, and reflections. It traces the path of light rays as they interact with objects in a 3D scene, calculating reflections, refractions, and accurate lighting effects.</p>
+<p>Ray tracing involves some basic mathematics. Oops, I just mentioned our worst nightmare 😟 Don&rsquo;t worry though, it&rsquo;s not as scary as it sounds. I&rsquo;ve got you. So without any further ado, let&rsquo;s get started.</p>
+<blockquote>
+<p>One drawback of ray tracing is performance. However, there are optimization techniques we can use to improve speed, which we&rsquo;ll touch on other part.</p>
+</blockquote>
+<p>The below image is generated using ray tracing algorithm</p>
+<p><img alt="Ray Traced Image" loading="lazy" src="/images/Glasses_800_edit.png"></p>
+<h3 id="how-ray-tracing-works">How Ray Tracing Works</h3>
+<p>Ray tracing simulates how light travels. Rays are cast from a single point in 3D space which is the camera into the scene through an imaginary viewport. Each ray corresponds to a pixel on the screen. When a ray intersects an object (like a sphere or triangle), we compute the closest intersection point to determine the final color of that pixel.</p>
+<p>This process is repeated for every pixel, creating a complete, realistic image.</p>
+<p><img alt="Viewport" loading="lazy" src="/images/ray_trace_viewport.png"></p>
+<p>we have prepared a pipeline to render a simple shape, we will improve it as we go deeper in the subject.</p>
+<ol>
+<li>Camera → rays</li>
+<li>Ray → Object intersection</li>
+<li>Drawing a pixel on the screen</li>
+</ol>
+<h3 id="lets-shoot-some-rays-from-the-camera">Let&rsquo;s shoot some rays from the camera</h3>
+<p>A <strong>ray</strong> is similar to a line but with an important difference a line extends infinitely in both directions, while a ray starts at a specific point and extends infinitely in one direction.</p>
+<p>Mathematically, a ray can be represented using a <strong>parametric equation</strong></p>
+<p>$P = O + t\cdot\overrightarrow{d}$</p>
+<p>Where:</p>
+<ul>
+<li><em>P</em> is any point along the ray</li>
+<li><em>O</em> is the ray&rsquo;s origin (starting point)</li>
+<li><em>d</em> is the direction vector</li>
+<li><em>t</em> is a scalar parameter</li>
+</ul>
+<p>If <em><code>t = 0</code></em>, then <em><code>P = O</code></em>.</p>
+<p>If <em><code>t = 1</code></em>, then <em><code>P = O + d</code></em>.</p>
+<p>Increasing <em><code>t</code></em> moves the point along the ray indefinitely.</p>
+<p>let&rsquo;s say we have two points in a space &ldquo;point A&rdquo; and &ldquo;point B&rdquo;, let&rsquo;s use 2D for now to better understand the above formula.</p>
+<p>$A = (0, 0) and B = (4, 4)$</p>
+<blockquote>
+<p>I will use a platform called desmos for plotting points, you can search it online</p>
+</blockquote>
+<p><img alt="GraphAB" loading="lazy" src="/images/Screenshot%202026-01-27%20095929.png"></p>
+<p>As we can see in the graph, we have two points, and we want to draw a line segment or a ray between them. A line is defined as an infinite set of points, so how can we represent the line that goes through points A and B? We use the parametric equation of a line. Before writing that equation, however, we need to determine the direction in which the line or ray is pointing. We can find this direction by subtracting point A from point B. The result is a vector, and this vector becomes the direction vector d in the parametric equation</p>
+<p>Example:</p>
+<p>$\text{let A = (0, 0)and B = (4, 4)}\\$</p>
+<p>$\overrightarrow{d}_x = B_x - A_x\\$</p>
+<p>$\overrightarrow{d}_y = B_y - A_y\\$</p>
+<p>now we have the direction, if you look closely the vector <strong>d</strong> is the same as the point B, this is when the origin starts from 0, but if it was another point in the space it would be different.</p>
+<p>let&rsquo;s plug the direction in the equation and draw our line, but there is one missing piece, the <em><strong>&ldquo;t&rdquo;</strong></em> right? don&rsquo;t worry we don&rsquo;t have to do anything for &rsquo;t&rsquo; it has to start from 0.0 and increase it infinitly</p>
+<p>$Let \text{ t} = 0.0\\$</p>
+<p>$P_x = A_x + t\cdot\overrightarrow{d}_x\\$</p>
+<p>$P_y = A_y + t\cdot\overrightarrow{d}_y\\$</p>
+<p>we repeat this process and increase the value of &ldquo;t&rdquo; until we reach B or exceed.</p>
+<p><img alt="graph" loading="lazy"></p>
+]]></content:encoded>
     </item>
   </channel>
 </rss>

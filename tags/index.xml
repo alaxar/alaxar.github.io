@@ -2,10 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on Low Level Mind</title>
-    <link>https://alaxar.github.io/tags/</link>
+    <link>https://lowlevelmind.com/tags/</link>
     <description>Recent content in Tags on Low Level Mind</description>
     <generator>Hugo -- 0.155.3</generator>
     <language>en-us</language>
-    <atom:link href="https://alaxar.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 15 Feb 2026 23:34:40 +0300</lastBuildDate>
+    <atom:link href="https://lowlevelmind.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Computer Graphics</title>
+      <link>https://lowlevelmind.com/tags/computer-graphics/</link>
+      <pubDate>Sun, 15 Feb 2026 23:34:40 +0300</pubDate>
+      <guid>https://lowlevelmind.com/tags/computer-graphics/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Game Development</title>
+      <link>https://lowlevelmind.com/tags/game-development/</link>
+      <pubDate>Sun, 15 Feb 2026 23:34:40 +0300</pubDate>
+      <guid>https://lowlevelmind.com/tags/game-development/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ray Tracing</title>
+      <link>https://lowlevelmind.com/tags/ray-tracing/</link>
+      <pubDate>Sun, 15 Feb 2026 23:34:40 +0300</pubDate>
+      <guid>https://lowlevelmind.com/tags/ray-tracing/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>
