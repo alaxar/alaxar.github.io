@@ -17,8 +17,11 @@
       <content:encoded><![CDATA[<p>Graphics APIs and game engines make rendering look easy, but they hide most of the interesting details. I wanted to understand what actually happens under the hood, so I decided to build a small 3D renderer from scratch using C++.
 By the end of this article, you&rsquo;ll understand the core ideas behind ray tracing and be able to build a simple renderer yourself.
 We&rsquo;ll finish by rendering the image shown below, without using any graphics libraries or engines but with C++ and Maths.</p>
-<p><img alt="Ray Traced Image" loading="lazy" src="/images/image.webp"></p>
-<h3 id="why-raytracing">Why RayTracing</h3>
+<p><figure>
+    <img alt="Ray Traced Image" loading="lazy" src="/images/raytracer/image.webp">
+    <figcaption class="image_caption"></figcaption>
+</figure></p>
+<h1 id="why-raytracing">Why RayTracing</h1>
 <p>In computer graphics, there are two main rendering techniques: <strong>rasterization</strong> and <strong>ray tracing</strong>.</p>
 <p>You might ask, what exactly is rendering? In simple terms, rendering is the process of generating a 2D image or video from a 3D model or scene. It&rsquo;s considered the final stage of a 3D engine.</p>
 <p>While rasterization is fast and used in real-time applications like games, ray tracing simulates how light behaves in the real world to produce highly realistic images, shadows, and reflections. It traces the path of light rays as they interact with objects in a 3D scene, calculating reflections, refractions, and accurate lighting effects.</p>
@@ -27,18 +30,24 @@ We&rsquo;ll finish by rendering the image shown below, without using any graphic
 <p>One drawback of ray tracing is performance. However, there are optimization techniques we can use to improve speed, which we&rsquo;ll touch on other part.</p>
 </blockquote>
 <p>The below image is generated using ray tracing algorithm</p>
-<p><img alt="Ray Traced Image" loading="lazy" src="/images/Glasses_800_edit.png"></p>
-<h3 id="how-ray-tracing-works">How Ray Tracing Works</h3>
+<p><figure>
+    <img alt="Ray Traced Image" loading="lazy" src="/images/raytracer/Glasses_800_edit.png" title="Ray traced image (source: Wikipedia)">
+    <figcaption class="image_caption">Ray traced image (source: Wikipedia)</figcaption>
+</figure></p>
+<h1 id="how-ray-tracing-works">How Ray Tracing Works</h1>
 <p>Ray tracing simulates how light travels. Rays are cast from a single point in 3D space which is the camera into the scene through an imaginary viewport. Each ray corresponds to a pixel on the screen. When a ray intersects an object (like a sphere or triangle), we compute the closest intersection point to determine the final color of that pixel.</p>
 <p>This process is repeated for every pixel, creating a complete, realistic image.</p>
-<p><img alt="Viewport" loading="lazy" src="/images/ray_trace_viewport.png"></p>
+<p><figure>
+    <img alt="Viewport" loading="lazy" src="/images/raytracer/ray_trace_viewport.png">
+    <figcaption class="image_caption"></figcaption>
+</figure></p>
 <p>we have prepared a pipeline to render a simple shape, we will improve it as we go deeper in the subject.</p>
 <ol>
 <li>Camera → rays</li>
 <li>Ray → Object intersection</li>
 <li>Drawing a pixel on the screen</li>
 </ol>
-<h3 id="lets-shoot-some-rays-from-the-camera">Let&rsquo;s shoot some rays from the camera</h3>
+<h1 id="lets-shoot-some-rays-from-the-camera">Let&rsquo;s shoot some rays from the camera</h1>
 <p>A <strong>ray</strong> is similar to a line but with an important difference a line extends infinitely in both directions, while a ray starts at a specific point and extends infinitely in one direction.</p>
 <p>Mathematically, a ray can be represented using a <strong>parametric equation</strong></p>
 <p>$P = O + t\cdot\overrightarrow{d}$</p>
@@ -57,19 +66,91 @@ We&rsquo;ll finish by rendering the image shown below, without using any graphic
 <blockquote>
 <p>I will use a platform called desmos for plotting points, you can search it online</p>
 </blockquote>
-<p><img alt="GraphAB" loading="lazy" src="/images/Screenshot%202026-01-27%20095929.png"></p>
+<p><figure>
+    <img alt="Two points in 2D space" loading="lazy" src="/images/raytracer/Screenshot%202026-01-27%20095929.png#center" title="Two points in 2D space">
+    <figcaption class="image_caption">Two points in 2D space</figcaption>
+</figure></p>
 <p>As we can see in the graph, we have two points, and we want to draw a line segment or a ray between them. A line is defined as an infinite set of points, so how can we represent the line that goes through points A and B? We use the parametric equation of a line. Before writing that equation, however, we need to determine the direction in which the line or ray is pointing. We can find this direction by subtracting point A from point B. The result is a vector, and this vector becomes the direction vector d in the parametric equation</p>
 <p>Example:</p>
 <p>$\text{let A = (0, 0)and B = (4, 4)}\\$</p>
 <p>$\overrightarrow{d}_x = B_x - A_x\\$</p>
 <p>$\overrightarrow{d}_y = B_y - A_y\\$</p>
+<p>$\overrightarrow{d} = \text{(4, 4)}$</p>
 <p>now we have the direction, if you look closely the vector <strong>d</strong> is the same as the point B, this is when the origin starts from 0, but if it was another point in the space it would be different.</p>
 <p>let&rsquo;s plug the direction in the equation and draw our line, but there is one missing piece, the <em><strong>&ldquo;t&rdquo;</strong></em> right? don&rsquo;t worry we don&rsquo;t have to do anything for &rsquo;t&rsquo; it has to start from 0.0 and increase it infinitly</p>
 <p>$Let \text{ t} = 0.0\\$</p>
 <p>$P_x = A_x + t\cdot\overrightarrow{d}_x\\$</p>
 <p>$P_y = A_y + t\cdot\overrightarrow{d}_y\\$</p>
 <p>we repeat this process and increase the value of &ldquo;t&rdquo; until we reach B or exceed.</p>
-<p><img alt="graph" loading="lazy"></p>
+<p><figure>
+    <img alt="graph1" loading="lazy" src="/images/raytracer/Screenshot%202026-01-27%20102724.png" title="Line from A to B">
+    <figcaption class="image_caption">Line from A to B</figcaption>
+</figure></p>
+<p>as you can see here by using the equation we draw a line from A to B, here you can see that when <em>&ldquo;t&rdquo;</em> starts from 0 and reaches 1 it ends at B, this is called a line segment, but we need a ray, and to do that its very simple we set <em>&ldquo;t&rdquo;</em> to infinity or a large number would work, now we have a ray and next image shows that.</p>
+<p><figure>
+    <img alt="graph1" loading="lazy" src="/images/raytracer/Screenshot%202026-01-27%20103040.png">
+    <figcaption class="image_caption"></figcaption>
+</figure></p>
+<p>here we can see that the line exceeded the point B or the direction, now this is what we call a ray, but we don&rsquo;t want to shoot a single ray, we will need to cast/shoot many rays, right? so to do that we need what we call a viewport, let&rsquo;s go right into it.</p>
+<h1 id="what-is-viewport">What is Viewport??</h1>
+<p>A viewport is a 2D rectangular virtual window that represents the final image plane through which the camera &ldquo;sees&rdquo; the 3D scene. It acts as a canvas or image plane and is usually divided into pixels. Rays are traced from the camera through each pixel on the viewport to determine the final color of the scene.</p>
+<p>A viewport is defined by its center point, width and height (aspect ratio), and its distance from the camera. This distance determines the field of view (FOV). If it&rsquo;s hard to visualize, you can think of the viewport as a plane placed between the camera and the 3D scene.</p>
+<p>Earlier, we drew a line from point A to point B and extended it beyond B. In that example, you can think of point B as representing the viewport or image plane. Of course, a viewport is not a single point, but a rectangular area with width and height. This simplification just helps with visualization.</p>
+<p>The viewport&rsquo;s main purpose is to act as a bridge between 3D scene space and 2D image pixels. Rays are cast from the camera through the pixels on this plane to find intersections with 3D objects located beyond it.
+To help you illustrate it take a look at the below image. Let&rsquo;s &ldquo;point A&rdquo; be the camera and all &ldquo;Point Bs&rdquo; the viewport, beyond it, is the 3D scene.</p>
+<p><figure>
+    <img alt="graph1" loading="lazy" src="/images/raytracer/Screenshot%202026-01-27%20110757.png" title="Ray casted from A along the direction of B and intersecting with 3D objects">
+    <figcaption class="image_caption">Ray casted from A along the direction of B and intersecting with 3D objects</figcaption>
+</figure></p>
+<p>As shown in the image above, multiple rays are cast from the camera, or point A, through the viewport in the direction of point B. These rays travel into the 3D scene and intersect with objects along their paths.</p>
+<p>For each ray, we check whether it intersects any object in the scene. If an intersection occurs, we compute the exact intersection point and use it to determine the final color of that pixel.</p>
+<p>In our case, we will start with spheres, since they are the simplest geometric primitives to work with.</p>
+<h1 id="sphere-equation-and-ray-intersection">Sphere Equation and Ray Intersection</h1>
+<p>A sphere can be thought of as a circle extended into 3D space. To simplify the explanation, we&rsquo;ll first work in 2D using a circle, then extend the same idea to a sphere when we move to implementation. A circle or sphere is defined by two things, it&rsquo;s center and radius.</p>
+<p>$x^2 + y^2 = r^2$</p>
+<p>if the center is at the origin</p>
+<p>$(C_x + x)^2 + (C_y + y)^2 = r^2$</p>
+<p>when changing the origin of the circle or sphere</p>
+<p><strong>Where</strong></p>
+<ul>
+<li><em>x</em> and y are the point on the surface</li>
+<li><em>r</em> is the distance from the center of the circle to its surface</li>
+<li><em>Cx</em> is the x component center of the circle</li>
+<li><em>Cy</em> is the y component center of the circle</li>
+</ul>
+<p>This equation represents a circle. It means that any point (x,y)(x, y)(x,y) whose distance from the center equals the radius r lies on the surface of the circle.</p>
+<p>To make this easier to work with, let&rsquo;s simplify the equation.</p>
+<p>$(C_x + x)^2 + (C_y + y)^2 = |P - C|$</p>
+<p>or</p>
+<p>$|P - C| = r^2$</p>
+<p>We can interpret this equation as the length of the vector <strong>D</strong> from point <strong>P</strong> to point <strong>C</strong>, where <strong>P</strong> lies on the surface of the circle and <strong>C</strong> is the center of the circle. Subtracting these two points gives us the vector <strong>D</strong>, and the magnitude of this vector is equal to the radius of the circle.</p>
+<p>Going a step further, this expression can also be written as the dot product of vector <strong>D</strong> with itself, which gives us</p>
+<p>$\overrightarrow{d}\cdot\overrightarrow{d} = r^2$</p>
+<p>Now let&rsquo;s expand the dot product.</p>
+<p>$\overrightarrow{d}_x\times\overrightarrow{d}_x+\overrightarrow{d}_y\times\overrightarrow{d}_y$</p>
+<p>this is the expanded dot product.</p>
+<p>$\overrightarrow{d}_x^2\times\overrightarrow{d}_y^2$</p>
+<p>Do you notice something? It&rsquo;s similar to the equation of a circle, right? Exactly! That means the dot product of vector &lsquo;D&rsquo; behaves just like a circle equation. Now we have a simplified equation that&rsquo;s much easier to work with.</p>
+<p>$|P - C| \cdot |P - C| = r^2$</p>
+<p>You might be wondering why we needed to simplify this equation. Well, it&rsquo;s so we can more easily integrate it with the ray equation. In the simplified version, we have &lsquo;P&rsquo;, which represents a point on the surface of the circle. So, if we can find a &lsquo;P&rsquo; that satisfies this equation, that means we&rsquo;ve found the circle, right? But how do we actually find &lsquo;P&rsquo;? If you remember…</p>
+<p>$P = O + t\cdot\overrightarrow{d}$</p>
+<p>This was our ray equation, right? Do you see something here? Yes, we can use the ray equation to find the point &lsquo;P&rsquo; that satisfies this condition. That means the circle equation now becomes…</p>
+<p>$(O + t\overrightarrow{d}) - C\cdot(O + t\overrightarrow{d}) - C = r^2$</p>
+<p>As you can see, we&rsquo;ve combined the ray equation with the sphere equation. You might be wondering why we need to mix these two. The reason is simple, we want to find the intersection between the ray we cast and the sphere. I hope you&rsquo;re following so far, so the next step is to simplify the combined equation.</p>
+<p>if we separate &ldquo;td&rdquo; we get</p>
+<p>$(-t\overrightarrow{d} + (O - C))\cdot(-t\overrightarrow{d}+(O - C)) = r^2$</p>
+<p>Now let&rsquo;s expand the dot product. We get</p>
+<p>$t^2\overrightarrow{d}\cdot\overrightarrow{d} - 2t\overrightarrow{d}\cdot(O - C) + (O - C)\cdot(O - C) = r^2$</p>
+<p>Let&rsquo;s subtract r² from both sides. We get</p>
+<p>$t^2\overrightarrow{d}\cdot\overrightarrow{d} - 2t\overrightarrow{d}\cdot(O - C) + (O - C)\cdot(O - C) - r^2 = 0$</p>
+<p>Now, if we take a closer look, the vectors and the radius are known because the radius &lsquo;r&rsquo; is constant and the vectors are reduced to scalar values through their dot products. The only unknowns are &rsquo;t&rsquo; and &rsquo;t²&rsquo;, which means this equation is quadratic. This also means we can solve it using the quadratic formula for equations of the form ax² + bx + c = 0.</p>
+<p>$x = -b \frac{\pm\sqrt{b^2 - 4ac}}{2a}$</p>
+<p>Now, let&rsquo;s match our final ray-sphere equation to the familiar quadratic equation.</p>
+<p>$a = \overrightarrow{d}\cdot\overrightarrow{d}$</p>
+<p>$b = 2\overrightarrow{d}\cdot(O - C)$</p>
+<p>$c = (O - C)\cdot(O - C) - r^2$</p>
+<p>Using the quadratic formula, we can solve for <em>t</em>. The square root term, known as the discriminant, can be positive, negative, or zero. A positive discriminant means there are two solutions, zero means there is exactly one solution, and a negative value means there is no solution at all. This discriminant tells us whether the ray intersects the sphere, but not where the intersection occurs, since it only indicates the existence of a solution. At this stage, we can already render a basic sphere on the screen. However, to fully utilize the equation, we compute the actual value of <em>t</em>. Once <em>t</em> is known, we substitute it back into the ray equation to obtain the exact intersection point along the ray.</p>
+<p>In the next part we will focus on writing code and render our first 3D object.</p>
 ]]></content:encoded>
     </item>
   </channel>

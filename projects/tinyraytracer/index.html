@@ -112,9 +112,9 @@ document.addEventListener("DOMContentLoaded", function() {
     <meta property="article:section" content="projects">
     <meta property="article:published_time" content="2026-02-17T00:00:00+00:00">
     <meta property="article:modified_time" content="2026-02-17T00:00:00+00:00">
-    <meta property="og:image" content="https://lowlevelmind.com/images/image.webp">
+    <meta property="og:image" content="https://lowlevelmind.com/images/raytracer/image.webp">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://lowlevelmind.com/images/image.webp">
+<meta name="twitter:image" content="https://lowlevelmind.com/images/raytracer/image.webp">
 <meta name="twitter:title" content="tinyRaytracer">
 <meta name="twitter:description" content="A CPU-based 3D renderer built from scratch using C&#43;&#43;.">
 
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function() {
   "articleBody": "This is a CPU-based tiny ray tracer capable of rendering basic geometric primitives like spheres, planes, and cubes. I developed this project entirely from scratch in C++, implementing core features such as ray-object intersections, shading, and interactive camera control through mouse movement, to explore and demonstrate the fundamental principles behind modern 3D rendering and game development\nProject Link: https://github.com/alaxar/tinyRayTracer\nBlog: Project Tutorial\n",
   "wordCount" : "62",
   "inLanguage": "en",
-  "image":"https://lowlevelmind.com/images/image.webp","datePublished": "2026-02-17T00:00:00Z",
+  "image":"https://lowlevelmind.com/images/raytracer/image.webp","datePublished": "2026-02-17T00:00:00Z",
   "dateModified": "2026-02-17T00:00:00Z",
   "author":[{
     "@type": "Person",
@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </div>
   </header> 
 <figure class="entry-cover">
-        <img loading="eager" src="https://lowlevelmind.com/images/image.webp" alt="">
+        <img loading="eager" src="https://lowlevelmind.com/images/raytracer/image.webp" alt="">
         
 </figure>
 
@@ -261,7 +261,18 @@ document.addEventListener("DOMContentLoaded", function() {
 <p>Blog: <a href="https://lowlevelmind.com/posts/01/ray_tracing_from_scratch_in_cpp/">Project Tutorial</a></p>
 
 
-  </div>
+    </div>
+    
+    <div class="post-like-wrapper">
+    <button id="like-btn" class="like-btn-modern" aria-label="Like this post">
+        <div class="heart-container">
+            <svg class="heart-svg" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </div>
+        <span id="like-count" class="count-display">0</span>
+    </button>
+</div>
 
   <footer class="post-footer">
     <ul class="post-tags">
@@ -336,6 +347,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </ul>
 
   </footer>
+
 </article>
     </main>
     
@@ -349,7 +361,7 @@ document.addEventListener("DOMContentLoaded", function() {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
         <path d="M12 6H0l6-6z" />
     </svg>
-</a>
+</a><script src="/js/likes.js" defer></script>
 
 <script>
     let menu = document.getElementById('menu');
